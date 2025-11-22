@@ -12,18 +12,16 @@ import os
 # reading csv file and drop samples with NAs in oxygen data
 # -----------------------------------------------------------
 data = pd.read_csv(os.getcwd()+"/../4)Significant_gene/MetaGeoSeqData_with_interpolation_MergedData.csv.csv")
-data = data.dropna(subset = ["Oxygen_interpolated","NO3_interpolated","NO2_interpolated","Ammonia_interpolated","Fe_interpolated","Mn_interpolated","Sulfate_interpolated"], how ='all')  # filter out the NAs if all of the listed datasets is NA
+data = data.dropna(subset = ["Oxygen_interpolated","NO3_interpolated","Ammonia_interpolated","Fe_interpolated","Mn_interpolated"], how ='all')  # filter out the NAs if all of the listed datasets is NA
 
 # get column locations for creating dataset GEO + SEQ
 col_Core = data.columns.get_loc('Core')
 col_Depth = data.columns.get_loc('Depth')
 col_Oxygen_interpolated = data.columns.get_loc('Oxygen_interpolated')
 col_Nitrate_interpolated = data.columns.get_loc('NO3_interpolated')
-col_Nitrite_interpolated = data.columns.get_loc('NO2_interpolated')
 col_Ammonia_interpolated = data.columns.get_loc('Ammonia_interpolated')
 col_Fe_interpolated = data.columns.get_loc('Fe_interpolated')
 col_Mn_interpolated = data.columns.get_loc('Mn_interpolated')
-col_Sulfate_interpolated = data.columns.get_loc('Sulfate_interpolated')
 
 data = np.array(data)
 
@@ -125,14 +123,12 @@ for j in range(len(sample_names)):
         # combined[j,3] = OTUtable[i,0].split("OTU_")[1]                 # OTUtable[i,0]; if OTU_ before number: OTUtable[i,0].split("OTU_")[1]
         combined[j,2] = data[select,col_Oxygen_interpolated][0]  # O2 concentration [uM]
         combined[j,3] = data[select,col_Nitrate_interpolated][0]  # Nitrate concentration [uM]
-        combined[j,4] = data[select,col_Nitrite_interpolated][0]  # Nitrite concentration [uM]
-        combined[j,5] = data[select,col_Ammonia_interpolated][0]  # Ammonia concentration [uM]
-        combined[j,6] = data[select,col_Fe_interpolated][0]  # Fe concentration [uM]
-        combined[j,7] = data[select,col_Mn_interpolated][0]  # Mn concentration [uM]
-        combined[j,8] = data[select,col_Sulfate_interpolated][0]  # SO4 concentration [mM]
-        combined[j,9:N_OTU+9] = OTUtable[:,j+1]                        # Abundance
+        combined[j,4] = data[select,col_Ammonia_interpolated][0]  # Ammonia concentration [uM]
+        combined[j,5] = data[select,col_Fe_interpolated][0]  # Fe concentration [uM]
+        combined[j,6] = data[select,col_Mn_interpolated][0]  # Mn concentration [uM]
+        combined[j,7:N_OTU+7] = OTUtable[:,j+1]                        # Abundance
 
 # %%
 # Save file
 np.savetxt(os.getcwd()+"/Data_prep_ML_FAMILY_datacomparison_clr.csv", combined, delimiter=",", fmt="%s",
-           header="Core,Depth,O2conc,NO3conc,NO2conc,NH4conc,Feconc,Mnconc,SO4conc,"+','.join(OTUtable[:,0]))
+           header="Core,Depth,O2conc,NO3conc,NH4conc,Feconc,Mnconc,"+','.join(OTUtable[:,0]))
