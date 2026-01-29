@@ -509,7 +509,7 @@ for var in variables:
 
         # Save important features
         rules = get_rules(dtree_sklearn, feature_selection, None) 
-        path = '/home/renee/Renee-PhD/Projects/Sequencing_Data_ML/Writing/Geochemical_Zonation/Final_Plots/'
+        path = os.getcwd()+"/rules_extract/"
 
         if len(rule_features) == 0:
             rule_features = DT_Features(rules)
@@ -520,24 +520,24 @@ for var in variables:
             rule_features_high, rule_features_low = pd.concat([rule_features_high,h]), pd.concat([rule_features_low,l])
     
         # save rules
-        # name = ['general','high','low']
-        # for n,i in enumerate([rule_features,rule_features_high,rule_features_low]):
-        #     rule_features2 = i.groupby(["OTU"]).sum()
-        #     rule_features2 = rule_features2.sort_values(by='value', ascending=False)
-        #     rule_features2 = rule_features2.reset_index()
+        name = ['general','high','low']
+        for n,i in enumerate([rule_features,rule_features_high,rule_features_low]):
+            rule_features2 = i.groupby(["OTU"]).sum()
+            rule_features2 = rule_features2.sort_values(by='value', ascending=False)
+            rule_features2 = rule_features2.reset_index()
 
-        #     # Load formerly formed rules
-        #     existing_rules = pd.read_csv(path+f'feature_frequency_rules_{var}_{name[n]}.csv')
-        #     existing_rules.columns = existing_rules.columns.str.replace(existing_rules.columns[0], 'OTU')
+            # Load formerly formed rules
+            existing_rules = pd.read_csv(path+f'feature_frequency_rules_{var}_{name[n]}.csv')
+            existing_rules.columns = existing_rules.columns.str.replace(existing_rules.columns[0], 'OTU')
 
-        #     # merge with new rules
-        #     rule_features3 = pd.concat([rule_features2, existing_rules])
-        #     rule_features3 = rule_features3.groupby(["OTU"]).sum()
-        #     rule_features3 = rule_features3.sort_values(by='value', ascending=False)
-        #     rule_features3 = rule_features3.reset_index()
+            # merge with new rules
+            rule_features3 = pd.concat([rule_features2, existing_rules])
+            rule_features3 = rule_features3.groupby(["OTU"]).sum()
+            rule_features3 = rule_features3.sort_values(by='value', ascending=False)
+            rule_features3 = rule_features3.reset_index()
 
-        #     # save new rules set
-        #     np.savetxt(path+f'feature_frequency_rules_{var}_{name[n]}.csv', rule_features2, delimiter=",", fmt="%s",header = 'OTU,value')
+            # save new rules set
+            np.savetxt(path+f'feature_frequency_rules_{var}_{name[n]}.csv', rule_features2, delimiter=",", fmt="%s",header = 'OTU,value')
 
 
         # ================================
